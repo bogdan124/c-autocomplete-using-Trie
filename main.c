@@ -2,14 +2,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-/*
-Intai de toate pot sa zic ca m-am complicat putin
-deoarece puteam sa pun adresele cu literele noi care vin in
-locul lor predestinat in alfabet .
-In schimb eu le-am pus in primul loc gasit liber.
-
-
-*/
 
 struct TreeNODE{
   char data;
@@ -29,15 +21,20 @@ T__NODE * alocSpaceT__NODE(int n);
 T__NODE initTRIE(char firstletter,int final_string);
 void createNodesChains(T__NODE rootTR,char * whatWordsToPut);
 ADDRESS_INT lookForWord(T__NODE rootTR,char * word);
-void showALL(T__NODE * rootTR,char * cunvantPrime,int swicth,int firstPrint);
+void showALL(T__NODE * rootTR,char * stiva);
 void fileDict(char * filename,T__NODE rootTR);
-
+void push(char * stiva,char add);
+void pop(char * stiva);
 
 int main(int a,char ** filename){
   char * cunvantPrime;
   int final_string;
   T__NODE rootTR;
   ADDRESS_INT adress;
+  char * stiva;
+  stiva=alocSpace(100);
+
+
 
   cunvantPrime=alocSpace(100);
   printf("Dati un cuvant:");
@@ -47,8 +44,13 @@ int main(int a,char ** filename){
   printf("\n");
   adress=lookForWord(rootTR,cunvantPrime);
   if(adress.isLastNode!=1){
-    printf("Vrei sa scrii?\n" );
-    showALL(adress.adrressWhereRemain,cunvantPrime,1,1);
+    printf("Este corect %s sau vrei sa scrii?\n",cunvantPrime);
+    if(strlen(cunvantPrime)>1){
+      for(int i=0;i<strlen(cunvantPrime)-1;i++){
+        push(stiva,cunvantPrime[i]);
+      }
+    }
+    showALL(adress.adrressWhereRemain,stiva);
     printf("\n");
   }
 
@@ -111,7 +113,6 @@ ADDRESS_INT lookForWord(T__NODE rootTR,char * word){
     for(int y=0;y<26;y++){
         if(auxNOW->next[y]!=NULL){
           if(auxNOW->next[y]->data==word[j]){
-        //    printf("%c%d",auxNOW->next[y]->data ,auxNOW->next[y]->final_string);
             auxNOW=auxNOW->next[y];
             break;
           }
@@ -142,31 +143,48 @@ while(lineZ>=0){
 fclose(f);
 }
 
+void push(char * stiva,char add){
+
+  stiva[strlen(stiva)]=add;
+
+  stiva[strlen(stiva)+1]='\0';
+
+}
+
+void pop(char * stiva){
 
 
-void showALL(T__NODE * rootTR,char * cunvantPrime,int swicth,int firstPrint){
-
-
-  if(rootTR){
-    if(rootTR->final_string==1){
-        swicth=1;
-    }
-
-    if(firstPrint==1){
-    
-      firstPrint=0;
-    }else{
-      printf("%c",rootTR->data );
-    }
-    if(swicth==1){
-      printf("\n%s",cunvantPrime);
-      swicth=0;
-    }
-    for(int y=0;y<26;y++){
-      showALL(rootTR->next[y],cunvantPrime,swicth,firstPrint);
-    }
-
+  if(strlen(stiva)!=0)
+  {
+      stiva[strlen(stiva)-1]='\0';
   }
+
+
+}
+
+void showALL(T__NODE * rootTR,char * stiva){
+
+
+      if(rootTR->final_string==1){
+        printf("%s",stiva );
+        printf("%c",rootTR->data);
+        printf("\n");
+      }
+    for(int y=0;y<26;y++){
+      if(rootTR->next[y]){
+        push(stiva,rootTR->data );
+        if(rootTR->final_string==1){
+            push(stiva,rootTR->data );
+        }
+        showALL(rootTR->next[y],stiva);
+
+          pop(stiva);
+
+
+      }
+    }
+
+
 
 }
 
