@@ -34,6 +34,10 @@ int main(int a,char ** filename){
   char * stiva;
   stiva=alocSpace(100);
 
+  if(filename[1]==NULL){
+    printf("Please provide a dictionary of words as an argument!!!\n" );
+    exit(1);
+  }
 
 
   cunvantPrime=alocSpace(100);
@@ -52,6 +56,8 @@ int main(int a,char ** filename){
     }
     showALL(adress.adrressWhereRemain,stiva);
     printf("\n");
+  }else{
+    printf("Nu am gasit ceva asemanator in dictionarul furnizat!!!\n");
   }
 
 }
@@ -102,6 +108,7 @@ void createNodesChains(T__NODE rootTR,char * whatWordsToPut){
     }
 
 }
+/* cauta un cuvant si returneza adresa unde a ramas*/
 ADDRESS_INT lookForWord(T__NODE rootTR,char * word){
 
   T__NODE * auxNOW;
@@ -188,6 +195,13 @@ void showALL(T__NODE * rootTR,char * stiva){
 
 }
 
+
+
+void deleteWord(T__NODE * rootT,char * stiva){
+
+
+
+}
 
 
 
