@@ -196,13 +196,16 @@ void showALL(T__NODE * rootTR,char * stiva){
 }
 
 
-
+/*
 void deleteWord(T__NODE * rootT,char * stiva){
 
+  for(int i=0;i<strlen(stiva);i++){
+       lookForWord(T__NODE rootTR,stiva[i]);
+  }
 
 
 }
-
+*/
 
 
 char * alocSpace(int n){
